@@ -503,8 +503,8 @@ class CitationMapGenerator:
         
         # Build title with DOI
         doi_str = f" ({doi})" if doi else ""
-        map_title = f"Geographic Distribution of Citing Papers{doi_str}"
-        bar_title = f"Top 20 Countries by Number of Citing Papers{doi_str}"
+        map_title = f"Global Citation Diffusion Map {doi_str}"
+        bar_title = f"Top 20 Countries by Number of Citing Papers {doi_str}"
         
         # Create choropleth map using Mapbox style (open-street-map).
         # Explicitly set center/zoom and a more distinct color scale to avoid
@@ -512,23 +512,52 @@ class CitationMapGenerator:
         vmin = int(plot_df["num_citing_papers"].min())
         vmax = int(plot_df["num_citing_papers"].max())
 
-        map_fig = px.choropleth_mapbox(
-            plot_df,
-            locations="iso3",
-            color="num_citing_papers",
-            hover_name="country_code",
-            hover_data={"num_citing_papers": True, "iso3": False},
-            labels={"num_citing_papers": "Number of Citing Papers"},
-            title=map_title,
-            mapbox_style="open-street-map",
-            color_continuous_scale="YlOrRd",
-            range_color=(vmin, vmax),
-            center={"lat": 10, "lon": 0},
-            zoom=1,
-            opacity=0.8,
-        )
-
-        map_fig.update_layout(margin=dict(l=20, r=20, t=70, b=20))
+        map_fig = px.choropleth(
+                        plot_df,
+                        locations="iso3",
+                        color="num_citing_papers",
+                        hover_name="country_code",
+                        hover_data={"num_citing_papers": True},
+                        labels={"num_citing_papers": "Number of Citing Papers"},
+                        title=map_title,
+                    )
+        map_fig.update_layout(
+                title=dict(
+                    text=map_title,
+                    x=0.5,
+                    xanchor="center",
+                    y=0.98,
+                    yanchor="top",
+                    font=dict(
+                        size=22,
+                        family="Arial, sans-serif"
+                    )
+                ),
+                margin=dict(l=0, r=0, t=70, b=0),
+            )
+        map_fig.update_layout(
+                    width=1200,
+                    height=550, 
+                    margin=dict(l=0, r=0, t=60, b=0),
+                    title=dict(
+                        x=0.5,
+                        xanchor="center",
+                        y=0.95,
+                        yanchor="top"
+                    ),
+                    coloraxis_colorbar=dict(
+                        title="Number of Citing Papers",
+                        len=0.7,
+                        y=0.5
+                    ),
+                    geo=dict(
+                        projection_type="natural earth",
+                        showcountries=True,
+                        showcoastlines=True,
+                        domain=dict(x=[0, 0.88], y=[0, 1]),
+                        fitbounds="locations"
+                    )
+                )
         
         # Create bar chart
         TOP_N = 20
@@ -545,6 +574,20 @@ class CitationMapGenerator:
             margin=dict(l=20, r=20, t=70, b=20),
             xaxis_tickangle=-45
         )
+        bar_fig.update_layout(
+                title=dict(
+                    text=bar_title,
+                    x=0.5,
+                    xanchor="center",
+                    y=0.98,
+                    yanchor="top",
+                    font=dict(
+                        size=16,
+                        family="Arial, sans-serif"
+                    )
+                ),
+                margin=dict(l=0, r=0, t=70, b=0),
+            )
         
         # Save HTML files
         map_path = output_dir / f"{doi.replace('/', '_')}_citation_country_map.html"
@@ -611,7 +654,7 @@ class CitationMapGenerator:
         
         # Build title with DOI
         doi_str = f" ({doi})" if doi else ""
-        pin_title = f"Institution-level Locations of Citing Authors{doi_str}"
+        pin_title = f"Global Institutional Citation Footprint {doi_str}"
         
         # Create scatter map (requires plotly 5.0+)
         pin_fig = px.scatter_map(
@@ -633,10 +676,28 @@ class CitationMapGenerator:
         )
         
         pin_fig.update_traces(marker=dict(symbol="marker", opacity=0.8, size=10))
+        lat_min, lat_max = inst_geo_df["latitude"].min(), inst_geo_df["latitude"].max()
+        lon_min, lon_max = inst_geo_df["longitude"].min(), inst_geo_df["longitude"].max()
+
         pin_fig.update_layout(
+            title=dict(
+                    text=pin_title,
+                    x=0.5,
+                    xanchor="center",
+                    y=0.98,
+                    yanchor="top",
+                    font=dict(
+                        size=22,
+                        family="Arial, sans-serif"
+                    )
+                ),
             mapbox_style="open-street-map",
-            margin=dict(l=20, r=20, t=70, b=20)
-        )
+            mapbox=dict(
+                center=dict(lat=float((lat_min + lat_max)/2), lon=float((lon_min + lon_max)/2)),
+                zoom=0.85
+            ),
+            margin=dict(l=10, r=10, t=90, b=10),)
+        pin_fig.update_geos(fitbounds="locations") 
         
         # Save HTML file
         pin_path = output_dir / f"{doi.replace('/', '_')}_citation_institution_pin_map.html"

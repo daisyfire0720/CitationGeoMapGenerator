@@ -1,0 +1,42 @@
+institution_id,institution_name,country_code,city,latitude,longitude,num_citing_papers
+https://openalex.org/I86519309,The University of Texas at Austin,US,Austin,30.26715,-97.74306,3
+https://openalex.org/I130701444,Georgia Institute of Technology,US,Atlanta,33.749,-84.38798,2
+https://openalex.org/I99043593,Macquarie University,AU,Sydney,-33.86785,151.20732,2
+https://openalex.org/I27837315,University of Michigan,US,Ann Arbor,42.27756,-83.74088,2
+https://openalex.org/I110930757,Management Development Institute,IN,Gurgaon,28.47228240966797,77.05870819091797,1
+https://openalex.org/I4210106258,Harvard College Observatory,US,Cambridge,42.38166809082031,-71.1285171508789,1
+https://openalex.org/I4210123265,National Institute of Clean and Low-Carbon Energy,CN,Beijing,39.907501220703125,116.39723205566406,1
+https://openalex.org/I99065089,Tsinghua University,CN,Beijing,39.9075,116.39723,1
+https://openalex.org/I153473198,North China Electric Power University,CN,Beijing,39.907501220703125,116.39723205566406,1
+https://openalex.org/I168719708,City University of Hong Kong,HK,Hong Kong,22.2783203125,114.17469024658203,1
+https://openalex.org/I308837,Suzhou University of Science and Technology,CN,Suzhou,31.304079055786133,120.59538269042969,1
+https://openalex.org/I90259746,Capital University of Economics and Business,CN,Beijing,39.907501220703125,116.39723205566406,1
+https://openalex.org/I136199984,Harvard University,US,Cambridge,42.3751,-71.10561,1
+https://openalex.org/I4210133369,Decision Sciences (United States),US,Fort Walton Beach,30.448593139648438,-86.61835479736328,1
+https://openalex.org/I4210137154,Cambridge College,US,Cambridge,42.36887741088867,-71.11093139648438,1
+https://openalex.org/I4210090489,State Key Laboratory of Pollution Control and Resource Reuse,CN,Nanjing,32.061668395996094,118.77777862548828,1
+https://openalex.org/I4210149979,Shanghai Academy of Environmental Sciences,CN,Shanghai,31.169626235961914,121.43001556396484,1
+https://openalex.org/I4210117527,Shanghai Xuhui Central Hospital,CN,Shanghai,31.222219467163086,121.45806121826172,1
+https://openalex.org/I4210109901,Shanghai Urban Transportation Design Institute (China),CN,Shanghai,31.250240325927734,121.46884155273438,1
+https://openalex.org/I4210085920,Shanghai Institute for Science of Science,CN,Xuhui,31.19594,121.44709,1
+https://openalex.org/I116953780,Tongji University,CN,Shanghai,31.222219467163086,121.45806121826172,1
+https://openalex.org/I98947143,California State Polytechnic University,US,Pomona,34.06210708618164,-117.82123565673828,1
+https://openalex.org/I4210095096,William and Barbara Leonard Transportation Center,US,San Bernardino,34.1822395324707,-117.32355499267578,1
+https://openalex.org/I103635307,"University of California, Riverside",US,Riverside,33.95335,-117.39616,1
+https://openalex.org/I79765343,University of Vaasa,FI,Vaasa,63.096,21.61577,1
+https://openalex.org/I158867519,International Management Institute,IN,New Delhi,28.539213180541992,77.1813735961914,1
+https://openalex.org/I84218800,"University of California, Davis",US,Davis,38.54491,-121.74052,1
+https://openalex.org/I32597200,Ghent University,BE,Ghent,51.05,3.71667,1
+https://openalex.org/I4210146559,Gallagher (United States),US,Rolling Meadows,42.0526008605957,-88.01605987548828,1
+https://openalex.org/I44461941,University of Houston,US,Houston,29.763280868530273,-95.36327362060547,1
+https://openalex.org/I193662353,Utrecht University,NL,Utrecht,52.0908317565918,5.122220039367676,1
+https://openalex.org/I4210159643,Institute of Technology and Business,CZ,České Budějovice,48.97446823120117,14.474340438842773,1
+https://openalex.org/I8264552,Lublin University of Technology,PL,Lublin,51.25,22.566669464111328,1
+https://openalex.org/I2800249161,Military University of Technology in Warsaw,PL,Warsaw,52.22977066040039,21.01177978515625,1
+https://openalex.org/I161318765,"University of California, Los Angeles",US,Los Angeles,34.05223,-118.24368,1
+https://openalex.org/I2799798094,UCLA Health,US,Los Angeles,34.05223,-118.24368,1
+https://openalex.org/I95457486,"University of California, Berkeley",US,Berkeley,37.87159,-122.27275,1
+https://openalex.org/I27577105,University College Cork,IE,Cork,51.89796829223633,-8.470609664916992,1
+https://openalex.org/I78577930,Columbia University,US,New York,40.71427,-74.00597,1
+https://openalex.org/I97018004,Stanford University,US,Stanford,37.42411,-122.16608,1
+https://openalex.org/I4210166402,Yangpu Hospital of Tongji University,CN,Yangpu,31.272483825683594,121.55061340332031,1
