@@ -1,6 +1,7 @@
 # Citation Map Generator
 
 A reusable Python module for analyzing and generating citation networks using the OpenAlex API. Generate citation maps, country distributions, and interactive visualizations from any academic DOI.
+Many thanks to @ChenLiu-1996 for building another Python tool CitationMap, but Google Scholar is very strict on pulling requests and there could be stability issues as being caught by CAPTCHA or robot check.
 
 ## Features
 
@@ -44,7 +45,7 @@ print(f"Bar chart HTML: {results['bar_html']}")
 ### 2. Command Line
 
 ```bash
-python citation_map_generator.py "your_api_key" "10.1016/j.apenergy.2022.119295" "./output"
+python citation_map_generator.py "your_api_key" "your_paper_doi" "your_output_directory"
 ```
 
 ### 3. Detailed Usage (with CSV generation)
