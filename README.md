@@ -114,7 +114,7 @@ After running the script with a target DOI, the module generates:
 
 ### 📍 Institution-Level Citation Map
 
-![Institution Map](example_output/example_citation_institution_map.png)
+![Institution Map](example_output/example_citation_institution_pin_map.png)
 
 ## API Reference
 OpenAlex is a bibliographic catalogue of scientific papers, authors and institutions accessible in open access mode, named after the Library of Alexandria. It started operating in January 2022 by OurResearch as a successor of the terminated Microsoft Academic Graph. OpenAlex competes with commercial products such as Clarivate's Web of Science or Elsevier's Scopus, and is complemented by bibliometrics tools and an API.
