@@ -1,0 +1,13 @@
+# Temporary maps
+*_choropleth_*.html
+citation_*_map.html
+citation_*_bar.html
+
+# Notebooks
+*.ipynb
+
+# Testing files
+test*.py
+
+# My usage files
+usage.py
