@@ -1,7 +1,7 @@
 # Citation Map Generator
-
-A reusable Python module for analyzing and generating citation networks using the OpenAlex API. Generate citation maps, country distributions, and interactive visualizations from any academic DOI.
-Many thanks to @ChenLiu-1996 for building another Python tool CitationMap, but Google Scholar is very strict on pulling requests and there could be stability issues as being caught by CAPTCHA or robot check.
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-blue?logo=linkedin)](https://www.linkedin.com/in/ziyidai/)
+A reusable Python module for analyzing and generating citation networks using the OpenAlex API.
+This tool enables users to generate forward citation maps, country-level distribution analyses, and interactive visualizations from any academic DOI. 
 
 ## Features
 
@@ -177,3 +177,8 @@ Contributions welcome! Please submit pull requests or open issues for bugs/featu
 - OpenAlex API docs: https://docs.openalex.org
 - Plotly visualization: https://plotly.com/python/
 - Pycountry: https://pypi.org/project/pycountry/
+
+## Acknowledgements and Thanks
+This script was written with the assistance of ChatGPT-5.2.
+
+Special thanks to @ChenLiu-1996 for developing the CitationMap project. While CitationMap provides valuable functionality, it relies on Google Scholar data extraction, which may encounter stability challenges due to CAPTCHA protections and automated request restrictions
