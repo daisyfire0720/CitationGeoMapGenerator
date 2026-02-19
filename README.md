@@ -106,15 +106,15 @@ After running the script with a target DOI, the module generates:
 
 ### 🌍 Country-Level Citation Map
 
-![Country Map](assets/example_country_map.png)
+![Country Map](example_output/example_country_map.png)
 
 ### 📈 Country Distribution (Bar Chart)
 
-![Country Bar](assets/example_country_bar.png)
+![Country Bar](example_output/example_country_bar.png)
 
 ### 📍 Institution-Level Citation Map
 
-![Institution Map](assets/example_institution_map.png)
+![Institution Map](example_output/example_institution_map.png)
 
 ## API Reference
 OpenAlex is a bibliographic catalogue of scientific papers, authors and institutions accessible in open access mode, named after the Library of Alexandria. It started operating in January 2022 by OurResearch as a successor of the terminated Microsoft Academic Graph. OpenAlex competes with commercial products such as Clarivate's Web of Science or Elsevier's Scopus, and is complemented by bibliometrics tools and an API.
