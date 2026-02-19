@@ -506,15 +506,16 @@ class CitationMapGenerator:
         map_title = f"Geographic Distribution of Citing Papers{doi_str}"
         bar_title = f"Top 20 Countries by Number of Citing Papers{doi_str}"
         
-        # Create choropleth map
-        map_fig = px.choropleth(
+        # Create choropleth map using Mapbox style (open-street-map)
+        map_fig = px.choropleth_mapbox(
             plot_df,
             locations="iso3",
             color="num_citing_papers",
             hover_name="country_code",
             hover_data={"num_citing_papers": True, "iso3": False},
             labels={"num_citing_papers": "Number of Citing Papers"},
-            title=map_title
+            title=map_title,
+            mapbox_style="open-street-map"
         )
         map_fig.update_layout(margin=dict(l=20, r=20, t=70, b=20))
         
@@ -710,15 +711,14 @@ if __name__ == "__main__":
     # Example usage
     import sys
     
-    if len(sys.argv) < 2:
-        print("Usage: python citation_map_generator.py <API_KEY> [DOI] [OUTPUT_DIR] [TOP_N_INSTITUTIONS]")
+    if len(sys.argv) < 3:
+        print("Usage: python citation_map_generator.py <API_KEY> <DOI> [OUTPUT_DIR] [TOP_N_INSTITUTIONS]")
         print("")
-        print("Example:")
-        print("  python citation_map_generator.py 'your_api_key' '10.1016/j.apenergy.2022.119295' './output' 120")
+        print("Error: DOI is required as the second argument.")
         sys.exit(1)
-    
+
     api_key = sys.argv[1]
-    doi = sys.argv[2] if len(sys.argv) > 2 else "10.1016/j.apenergy.2022.119295"
+    doi = sys.argv[2]
     output_dir = sys.argv[3] if len(sys.argv) > 3 else None
     top_n_institutions = int(sys.argv[4]) if len(sys.argv) > 4 else None
     
