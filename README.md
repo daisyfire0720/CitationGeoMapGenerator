@@ -56,8 +56,8 @@ generator = CitationMapGenerator(api_key="your_api_key")
 
 # Step 1: Generate intermediate CSVs
 csv_paths = generator.generate_csvs(
-    doi="10.1016/j.apenergy.2022.119295",
-    output_dir="./output"
+    doi="your_paper_doi",
+    output_dir="your_output_directory"
 )
 
 # Step 2: Analyze or process the CSVs as needed
@@ -66,7 +66,7 @@ csv_paths = generator.generate_csvs(
 # Step 3: Generate visualizations
 html_paths = generator.generate_html_visualizations(
     country_csv=csv_paths["country_counts"],
-    output_dir="./output"
+    output_dir="your_output_directory"
 )
 ```
 
