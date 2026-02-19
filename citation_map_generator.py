@@ -506,7 +506,12 @@ class CitationMapGenerator:
         map_title = f"Geographic Distribution of Citing Papers{doi_str}"
         bar_title = f"Top 20 Countries by Number of Citing Papers{doi_str}"
         
-        # Create choropleth map using Mapbox style (open-street-map)
+        # Create choropleth map using Mapbox style (open-street-map).
+        # Explicitly set center/zoom and a more distinct color scale to avoid
+        # low-contrast 'all-blue' outputs when values are similar.
+        vmin = int(plot_df["num_citing_papers"].min())
+        vmax = int(plot_df["num_citing_papers"].max())
+
         map_fig = px.choropleth_mapbox(
             plot_df,
             locations="iso3",
@@ -515,8 +520,14 @@ class CitationMapGenerator:
             hover_data={"num_citing_papers": True, "iso3": False},
             labels={"num_citing_papers": "Number of Citing Papers"},
             title=map_title,
-            mapbox_style="open-street-map"
+            mapbox_style="open-street-map",
+            color_continuous_scale="YlOrRd",
+            range_color=(vmin, vmax),
+            center={"lat": 10, "lon": 0},
+            zoom=1,
+            opacity=0.8,
         )
+
         map_fig.update_layout(margin=dict(l=20, r=20, t=70, b=20))
         
         # Create bar chart
