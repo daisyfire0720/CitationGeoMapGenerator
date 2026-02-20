@@ -7,9 +7,9 @@ This tool enables users to generate forward citation maps, country-level distrib
 - 🔍 **Fetch citing works** from OpenAlex API with robust retry logic
 - 🗺️ **Geographic analysis** - Extract country codes from author institutions
 - 📊 **Interactive visualizations** - Choropleth maps and bar charts (HTML)
-- � **Institution pin maps** - Geographic visualization of citing institutions
+- 📍 **Institution pin maps** - Geographic visualization of citing institutions
 - 🔗 **Merge multiple DOIs** - Combine citation data from multiple papers
-- �📁 **Intermediate outputs** - Export CSV files for custom analysis
+- 📁 **Intermediate outputs** - Export CSV files for custom analysis
 - 🔄 **Batch processing** - Analyze multiple papers efficiently
 - ⚙️ **Production-ready** - Proper error handling and logging
 
@@ -262,10 +262,6 @@ If you use this module in research, please consider citing:
 }
 ```
 
-## License
-
-MIT
-
 ## Contributing
 
 Contributions welcome! Please submit pull requests or open issues for bugs/features.
@@ -279,4 +275,4 @@ Contributions welcome! Please submit pull requests or open issues for bugs/featu
 ## Acknowledgements and Thanks
 This script was written with the assistance of ChatGPT-5.2.
 
-Special thanks to @ChenLiu-1996 for developing the CitationMap project. While CitationMap provides valuable functionality, it relies on Google Scholar data extraction, which may encounter stability challenges due to CAPTCHA protections and automated request restrictions
+Special thanks to @ChenLiu-1996 for developing the CitationMap project. While CitationMap provides valuable functionality, it relies on Google Scholar data extraction, which may encounter stability challenges due to CAPTCHA protections and automated request restrictions.
