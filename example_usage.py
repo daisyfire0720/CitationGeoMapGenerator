@@ -4,7 +4,7 @@ Example: Citation Map Generator Usage
 This script demonstrates different ways to use the citation_map_generator module.
 """
 
-from citation_map_generator import CitationMapGenerator, generate_citation_map
+from citation_map_generator import CitationMapGenerator, generate_citation_map, generate_merged_citation_map
 
 
 # ============================================================================
@@ -184,7 +184,56 @@ def example_5_custom_analysis():
 
 
 # ============================================================================
-# Example 6: Using from command line
+# Example 6: Merge multiple DOI citations
+# ============================================================================
+def example_6_merge_citations():
+    """Merge citation data from multiple DOIs into unified visualizations."""
+    print("\n" + "=" * 70)
+    print("Example 6: Merge citations from multiple papers")
+    print("=" * 70)
+    
+    # First, generate individual citation data for each DOI
+    api_key = "your_openalex_api_key_here"
+    output_dir = "./doi_output"
+    
+    dois = [
+        "10.1016/j.trd.2021.103159",
+        "10.1016/j.apenergy.2022.119295",
+        "10.1016/j.seta.2023.103267"
+    ]
+    
+    print("\n📝 Step 1: Generate citation data for each DOI...")
+    for doi in dois:
+        print(f"  Processing: {doi}")
+        try:
+            results = generate_citation_map(
+                api_key=api_key,
+                doi=doi,
+                output_dir=output_dir
+            )
+            print(f"    ✓ Generated")
+        except Exception as e:
+            print(f"    ❌ Error: {e}")
+    
+    print("\n🔗 Step 2: Merge all DOIs into unified visualizations...")
+    try:
+        merged_results = generate_merged_citation_map(
+            doi_list=dois,
+            output_dir=output_dir,
+            top_n_institutions=None  # Show all institutions, or set to e.g. 50
+        )
+        
+        print(f"\n✅ Merged files generated:")
+        print(f"  Country Map: {merged_results['map_html']}")
+        print(f"  Bar Chart: {merged_results['bar_html']}")
+        print(f"  Institution Pin Map: {merged_results['institution_pin_map_html']}")
+        print(f"  Merged CSVs: country_counts, institution_geo, citing_works, etc.")
+    except Exception as e:
+        print(f"  ❌ Error: {e}")
+
+
+# ============================================================================
+# Example 7: Using from command line
 # ============================================================================
 """
 You can also run citation_map_generator.py directly from the command line:
@@ -211,5 +260,6 @@ if __name__ == "__main__":
     # example_3_with_institution_limit()
     # example_4_multiple()
     # example_5_custom_analysis()
+    # example_6_merge_citations()
     
     print("Uncomment an example function in the __main__ section to run it!")

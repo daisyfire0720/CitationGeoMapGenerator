@@ -661,7 +661,6 @@ class CitationMapGenerator:
             inst_geo_df,
             lat="latitude",
             lon="longitude",
-            size="num_citing_papers",
             hover_name="institution_name",
             hover_data={
                 "city": True,
@@ -671,11 +670,10 @@ class CitationMapGenerator:
                 "longitude": False
             },
             title=pin_title,
-            size_max=50,
             zoom=1
         )
         
-        pin_fig.update_traces(marker=dict(symbol="marker", opacity=0.8, size=10))
+        pin_fig.update_traces(marker=dict(symbol="marker", size=10, opacity=0.8))
         lat_min, lat_max = inst_geo_df["latitude"].min(), inst_geo_df["latitude"].max()
         lon_min, lon_max = inst_geo_df["longitude"].min(), inst_geo_df["longitude"].max()
 
@@ -694,10 +692,12 @@ class CitationMapGenerator:
             mapbox_style="open-street-map",
             mapbox=dict(
                 center=dict(lat=float((lat_min + lat_max)/2), lon=float((lon_min + lon_max)/2)),
-                zoom=0.85
+                zoom=2
             ),
-            margin=dict(l=10, r=10, t=90, b=10),)
-        pin_fig.update_geos(fitbounds="locations") 
+            margin=dict(l=10, r=10, t=90, b=10),
+            height=700,
+            width=1200
+        )
         
         # Save HTML file
         pin_path = output_dir / f"{doi.replace('/', '_')}_citation_institution_pin_map.html"
@@ -774,6 +774,198 @@ def generate_citation_map(api_key: str, doi: str, output_dir: Optional[str] = No
     print(f"\n✅ Complete! Output files:")
     for key, path in all_files.items():
         if path:  # Skip empty paths
+            print(f"  {key}: {path}")
+    
+    return all_files
+
+
+def generate_merged_citation_map(doi_list: List[str], output_dir: Optional[str] = None, top_n_institutions: Optional[int] = None) -> Dict:
+    """
+    Merge citation data from multiple DOIs and generate combined visualizations.
+    
+    Reads CSV files generated for each DOI, merges them, and creates unified visualizations.
+    
+    Args:
+        doi_list: List of DOIs to merge (e.g., ["10.1016/j.trd.2021.103159", "10.1016/j.apenergy.2022.119295"])
+        output_dir: Output directory for merged files (default: current directory)
+        top_n_institutions: Limit merged institution map to top N institutions (optional)
+        
+    Returns:
+        Dictionary with paths to merged files:
+          - merged_country_counts: CSV path
+          - merged_citing_works: CSV path
+          - merged_edges: CSV path
+          - merged_nodes: CSV path
+          - merged_institution_geo: CSV path
+          - merged_map_html: Choropleth map HTML path
+          - merged_bar_html: Bar chart HTML path
+          - merged_institution_pin_map_html: Institution pin map HTML path
+    
+    Example:
+        >>> results = generate_merged_citation_map(
+        ...     doi_list=["10.1016/j.trd.2021.103159", "10.1016/j.apenergy.2022.119295"],
+        ...     output_dir="./doi_output"
+        ... )
+        >>> print(results["merged_map_html"])  # Path to merged interactive map
+    """
+    output_dir = Path(output_dir or ".")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    
+    generator = CitationMapGenerator("")  # Empty API key, not needed for merging
+    
+    print(f"\n🔗 Merging citation data from {len(doi_list)} DOIs:")
+    for doi in doi_list:
+        print(f"   - {doi}")
+    
+    all_country_dfs = []
+    all_inst_geo_dfs = []
+    all_citing_works_dfs = []
+    all_edges_dfs = []
+    all_nodes_dfs = []
+    
+    # Load CSVs for each DOI
+    for doi in doi_list:
+        doi_safe = doi.replace('/', '_')
+        print(f"  Loading files for DOI: {doi}")
+        
+        # Try to load country counts
+        country_csv = output_dir / f"{doi_safe}_country_counts.csv"
+        if country_csv.exists():
+            country_df = pd.read_csv(country_csv)
+            country_df['source_doi'] = doi
+            all_country_dfs.append(country_df)
+        
+        # Try to load institution geo data
+        inst_csv = output_dir / f"{doi_safe}_institution_geo_counts.csv"
+        if inst_csv.exists():
+            inst_df = pd.read_csv(inst_csv)
+            inst_df['source_doi'] = doi
+            all_inst_geo_dfs.append(inst_df)
+        
+        # Try to load citing works
+        citing_csv = output_dir / f"{doi_safe}_citing_works.csv"
+        if citing_csv.exists():
+            citing_df = pd.read_csv(citing_csv)
+            citing_df['source_doi'] = doi
+            all_citing_works_dfs.append(citing_df)
+        
+        # Try to load edges
+        edges_csv = output_dir / f"{doi_safe}_edges.csv"
+        if edges_csv.exists():
+            edges_df = pd.read_csv(edges_csv)
+            edges_df['source_doi'] = doi
+            all_edges_dfs.append(edges_df)
+        
+        # Try to load nodes
+        nodes_csv = output_dir / f"{doi_safe}_nodes.csv"
+        if nodes_csv.exists():
+            nodes_df = pd.read_csv(nodes_csv)
+            nodes_df['source_doi'] = doi
+            all_nodes_dfs.append(nodes_df)
+    
+    if not all_country_dfs:
+        raise RuntimeError(f"No CSV files found for the provided DOIs in {output_dir}")
+    
+    # Merge country counts
+    print("  Merging country counts...")
+    merged_country_df = pd.concat(all_country_dfs, ignore_index=True)
+    merged_country_df = merged_country_df.groupby('country_code', as_index=False)['num_citing_papers'].sum()
+    merged_country_df = merged_country_df.sort_values('num_citing_papers', ascending=False).reset_index(drop=True)
+    
+    # Merge institution geo data
+    print("  Merging institution geo data...")
+    if all_inst_geo_dfs:
+        merged_inst_geo_df = pd.concat(all_inst_geo_dfs, ignore_index=True)
+        # Group by institution ID and sum citing papers, keeping other fields from first occurrence
+        merged_inst_geo_df = merged_inst_geo_df.groupby('institution_id', as_index=False).agg({
+            'institution_name': 'first',
+            'country_code': 'first',
+            'city': 'first',
+            'latitude': 'first',
+            'longitude': 'first',
+            'num_citing_papers': 'sum'
+        })
+        merged_inst_geo_df = merged_inst_geo_df.sort_values('num_citing_papers', ascending=False).reset_index(drop=True)
+    else:
+        merged_inst_geo_df = pd.DataFrame()
+    
+    # Merge citing works
+    print("  Merging citing works...")
+    if all_citing_works_dfs:
+        merged_citing_df = pd.concat(all_citing_works_dfs, ignore_index=True)
+        merged_citing_df = merged_citing_df.drop_duplicates(subset=['citing_openalex_id']).reset_index(drop=True)
+    else:
+        merged_citing_df = pd.DataFrame()
+    
+    # Merge edges
+    print("  Merging edges...")
+    if all_edges_dfs:
+        merged_edges_df = pd.concat(all_edges_dfs, ignore_index=True)
+        merged_edges_df = merged_edges_df.drop_duplicates().reset_index(drop=True)
+    else:
+        merged_edges_df = pd.DataFrame()
+    
+    # Merge nodes
+    print("  Merging nodes...")
+    if all_nodes_dfs:
+        merged_nodes_df = pd.concat(all_nodes_dfs, ignore_index=True)
+        merged_nodes_df = merged_nodes_df.drop_duplicates(subset=['id']).reset_index(drop=True)
+    else:
+        merged_nodes_df = pd.DataFrame()
+    
+    # Save merged CSVs with simple naming
+    files = {
+        "merged_country_counts": output_dir / "merged_country_counts.csv",
+        "merged_institution_geo": output_dir / "merged_institution_geo_counts.csv",
+        "merged_citing_works": output_dir / "merged_citing_works.csv",
+        "merged_edges": output_dir / "merged_edges.csv",
+        "merged_nodes": output_dir / "merged_nodes.csv",
+    }
+    
+    merged_country_df.to_csv(files["merged_country_counts"], index=False)
+    merged_inst_geo_df.to_csv(files["merged_institution_geo"], index=False)
+    merged_citing_df.to_csv(files["merged_citing_works"], index=False)
+    merged_edges_df.to_csv(files["merged_edges"], index=False)
+    merged_nodes_df.to_csv(files["merged_nodes"], index=False)
+    
+    # Print merge summary
+    print(f"\n📊 Merge Summary:")
+    print(f"  Unique Countries: {len(merged_country_df)}")
+    print(f"  Total Citing Papers (Countries): {merged_country_df['num_citing_papers'].sum()}")
+    if not merged_inst_geo_df.empty:
+        print(f"  Unique Institutions: {len(merged_inst_geo_df)}")
+        print(f"  Total Citing Papers (Institutions): {merged_inst_geo_df['num_citing_papers'].sum()}")
+    if not merged_citing_df.empty:
+        print(f"  Unique Citing Works: {len(merged_citing_df)}")
+    
+    print(f"\n✓ Saved merged CSV files to {output_dir}:")
+    for key, path in files.items():
+        print(f"  - {path.name}")
+    
+    # Generate merged visualizations
+    print("\n🗺️  Generating merged HTML visualizations...")
+    html_files = generator.generate_html_visualizations(
+        str(files["merged_country_counts"]),
+        doi="Top Cited Papers",
+        output_dir=output_dir
+    )
+    
+    print("\n📍 Generating merged institution pin map...")
+    inst_files = generator.generate_institution_pin_map(
+        str(files["merged_institution_geo"]),
+        doi="Top Cited Papers",
+        output_dir=output_dir,
+        top_n=top_n_institutions
+    )
+    
+    # Combine all results
+    all_files = {k: str(v) for k, v in files.items()}
+    all_files.update(html_files)
+    all_files.update(inst_files)
+    
+    print(f"\n✅ Complete! Merged output files:")
+    for key, path in all_files.items():
+        if path:
             print(f"  {key}: {path}")
     
     return all_files

@@ -10,4 +10,5 @@ citation_*_bar.html
 test*.py
 
 # My usage files
-usage.py
+single_usage.py
+multiple_usage.py
