@@ -1,4 +1,4 @@
-# Citation Map Generator [![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-blue?logo=linkedin)](https://www.linkedin.com/in/ziyidai/)
+# Citation Map Generator
 A reusable Python module for analyzing and generating citation networks using the OpenAlex API.
 This tool enables users to generate forward citation maps, country-level distribution analyses, and interactive visualizations from any academic DOI. 
 
