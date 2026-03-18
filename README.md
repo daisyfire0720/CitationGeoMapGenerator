@@ -256,7 +256,7 @@ If you use this module in research, please consider citing:
 ```bibtex
 @software{citation_map_generator,
   title={Citation Map Generator},
-  author={Your Name},
+  author={Daisy Dai},
   year={2026},
   url={https://github.com/yourusername/citation-map-generator}
 }
